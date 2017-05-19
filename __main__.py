@@ -11,11 +11,27 @@ def IsInt(s):
 
 # Initialization code
 PATH_TO_UNTURNED = ""
+PATH_TO_WORKSHOP = ""
 STEAM64 = ""
 while True:
     PATH_TO_UNTURNED = input("Enter path to unturned: ")
-    if os.path.isdir(PATH_TO_UNTURNED) and os.path.isdir(PATH_TO_UNTURNED + "\\Maps"):
+    if os.path.isdir(PATH_TO_UNTURNED) and os.path.isdir(PATH_TO_UNTURNED + "\\Maps") and os.path.isdir(PATH_TO_UNTURNED + "\\Bundles\\Workshop\\Maps"):
         break
+    else:
+        print("Invalid path! Please select a different path")
+while True:
+    PATH_TO_WORKSHOP = input("Enter path to steam workshop(steamapps/workshop/content): ")
+    if os.path.isdir(PATH_TO_WORKSHOP):
+        if not os.path.isdir(PATH_TO_WORKSHOP + "\\304930"):
+            break
+        else:
+            if len(os.listdir(PATH_TO_WORKSHOP + "\\304930")) > 0 and os.path.isdir(PATH_TO_WORKSHOP + "\\304930\\" + os.listdir(PATH_TO_WORKSHOP + "\\304930")[0]):
+                if os.path.exists((PATH_TO_WORKSHOP + "\\304930\\" + os.listdir(PATH_TO_WORKSHOP + "\\304930")[0]) + "\\Map.meta"):
+                    break
+                else:
+                    print("Invalid path! Please select a different path")
+            else:
+                print("Invalid path! Please select a different path")
     else:
         print("Invalid path! Please select a different path")
 while True:
@@ -25,12 +41,24 @@ while True:
 
 # Set the variables
 PATH_TO_MAPS = PATH_TO_UNTURNED + "\\Maps"
+PATH_TO_BUNDLES = PATH_TO_UNTURNED + "\\Bundles\\Workshop\\Maps"
+PATH_TO_SHOP = PATH_TO_WORKSHOP + "\\304930"
 MAPS = []
 SELECTED_MAP = None
 
 # Post initialization code
 for directory in os.listdir(PATH_TO_MAPS):
     dirPath = PATH_TO_MAPS + "\\" + directory
+
+    if os.path.isdir(dirPath) and os.path.exists(dirPath + "\\Level.dat"):
+        MAPS.append(dirPath)
+for directory in os.listdir(PATH_TO_BUNDLES):
+    dirPath = PATH_TO_BUNDLES + "\\" + directory
+
+    if os.path.isdir(dirPath) and os.path.exists(dirPath + "\\Level.dat"):
+        MAPS.append(dirPath)
+for directory in os.listdir(PATH_TO_SHOP):
+    dirPath = PATH_TO_SHOP + "\\" + directory + "\\" + os.listdir(PATH_TO_SHOP + "\\" + directory)[0]
 
     if os.path.isdir(dirPath) and os.path.exists(dirPath + "\\Level.dat"):
         MAPS.append(dirPath)
